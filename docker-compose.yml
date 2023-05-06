@@ -1,0 +1,15 @@
+version: '3.3'
+services:
+  db:
+    container_name: "bnp_db_container"
+    image: "postgres:15.2"
+    ports:
+      - "5439:5432"
+    environment:
+      POSTGRES_DB: "bnp_db"
+      POSTGRES_USER: "bnp_user"
+      POSTGRES_PASSWORD: "bnp_password"
+    volumes:
+      - 'data:/var/lib/postgresql/data'
+volumes:
+  data:
