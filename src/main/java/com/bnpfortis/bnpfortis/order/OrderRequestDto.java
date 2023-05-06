@@ -9,5 +9,5 @@ import java.util.List;
 @Setter
 public class OrderRequestDto {
 
-    private List<OrderItem> orderItems;
+    private List<Long> bookIds;
 }
