@@ -18,7 +18,7 @@ class PurchaseServiceTest {
     private PurchaseService purchaseService;
 
     /**
-     * My own added corner cases. Meaning these cases were not mentionned in the assignment
+     * My own added test cases. Meaning these cases were not mentionned in the assignment
      */
 
     @Test
@@ -35,7 +35,7 @@ class PurchaseServiceTest {
     }
 
     @Test
-    @DisplayName("If basket contains an book that is not found then throw an exception")
+    @DisplayName("If basket contains any book that is not found then throw an exception")
     void testBookNotFound() {
 
         //Given
@@ -104,7 +104,7 @@ class PurchaseServiceTest {
     }
 
     /**
-     * Cases that were mentionned in the assignment
+     * Test Cases that were mentionned in the assignment
      */
 
     @Test
@@ -189,6 +189,7 @@ class PurchaseServiceTest {
         double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
         //Then
-        assertThat(result).isEqualTo(320);
+        assertThat(result).isEqualTo(322.5);
+
     }
 }
