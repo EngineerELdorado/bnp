@@ -1,18 +1,3 @@
 server:
   port: 8089
-  servlet:
-    context-path: /api/v1
-spring:
-  application:
-    name: "BnpBookDiscountApp"
-  datasource:
-    url: "jdbc:postgresql://localhost:5439/bnp_db"
-    username: "bnp_user"
-    password: "bnp_password"
-  flyway:
-    url: "jdbc:postgresql://localhost:5439/bnp_db"
-    user: "bnp_user"
-    password: "bnp_password"
-  jpa:
-    show-sql: true
 
