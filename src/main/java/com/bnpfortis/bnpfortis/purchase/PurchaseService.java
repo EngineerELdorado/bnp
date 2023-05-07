@@ -1,63 +1,98 @@
 package com.bnpfortis.bnpfortis.purchase;
 
-import com.bnpfortis.bnpfortis.book.Book;
-import com.bnpfortis.bnpfortis.book.BookRepository;
 import com.bnpfortis.bnpfortis.purchase.exceptions.EmptyBasketException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Service
-@RequiredArgsConstructor
 public class PurchaseService {
 
-    private final BookRepository bookRepository;
+    public double calculatePurchaseDiscount(int[] basket) {
 
-    public double calculateDiscount(List<Long> booksIds) {
+        final double PRICE_PER_BOOK = 50;
+        double totalCost = PRICE_PER_BOOK * basket.length;
 
-        if (booksIds.isEmpty()) {
-            throw new EmptyBasketException("The basket should contain books");
+        Map<Integer, Double> discountPercentages = getDiscountPercentages();
+        ifBasketIsEmptyThrowAnException(basket);
+
+        if (basket.length == 1) {
+            return totalCost;
         }
 
-        Set<Long> discountableBooks = new HashSet<>();
-        List<Long> nonDiscountableBooks = new ArrayList<>();
+        int numberOfDistinctBooks = getNumberOfDistinctBooks(basket);
+        if (numberOfDistinctBooks == 1 && basket.length > 1) {
+            return totalCost;
+        }
+        Map<Integer, Integer> bookCountMap = getBookCounts(basket);
 
-        for (Long bookId : booksIds) {
+        while (numberOfDistinctBooks > 1) {
+            int minCount = getMinCount(bookCountMap);
+            double discountPercentage = discountPercentages.getOrDefault(numberOfDistinctBooks, 0.0);
+            double discountAmount = numberOfDistinctBooks * minCount * PRICE_PER_BOOK * discountPercentage;
 
-            if (!discountableBooks.add(bookId)) {
-                nonDiscountableBooks.add(bookId);
+            totalCost -= discountAmount;
+
+            for (Map.Entry<Integer, Integer> entry : bookCountMap.entrySet()) {
+                int count = entry.getValue();
+                if (count >= minCount) {
+                    entry.setValue(count - minCount);
+                }
+            }
+
+            bookCountMap.values().removeIf(count -> count == 0);
+            numberOfDistinctBooks = bookCountMap.keySet().size();
+        }
+
+        return totalCost;
+    }
+
+    private void ifBasketIsEmptyThrowAnException(int[] basket) {
+        if (basket.length == 0) {
+            throw new EmptyBasketException("The basket is empty");
+        }
+    }
+
+    private Map<Integer, Double> getDiscountPercentages() {
+
+        Map<Integer, Double> discountPercentagesMap = new HashMap<>();
+        discountPercentagesMap.put(0, 0.0);
+        discountPercentagesMap.put(1, 0.0);
+        discountPercentagesMap.put(2, 0.05);
+        discountPercentagesMap.put(3, 0.1);
+        discountPercentagesMap.put(4, 0.2);
+        discountPercentagesMap.put(5, 0.25);
+        return discountPercentagesMap;
+    }
+
+    private int getMinCount(Map<Integer, Integer> bookCounts) {
+        int minCountThatQualifiesForDiscount = Integer.MAX_VALUE;
+
+        for (int count : bookCounts.values()) {
+            if (count > 0 && count < minCountThatQualifiesForDiscount) {
+                minCountThatQualifiesForDiscount = count;
             }
         }
 
-        double originalPriceOfDiscountableBooks = getPriceSum(discountableBooks);
-        double originalPriceOfNonDiscountableBooks = getPriceSum(nonDiscountableBooks);
-        int discountPercentage = getPercentage(discountableBooks);
-        double discountAmount = 0;
+        return minCountThatQualifiesForDiscount;
+    }
 
-        if (!discountableBooks.isEmpty()) {
-
-            discountAmount = (originalPriceOfDiscountableBooks * discountPercentage) / 100;
+    private int getNumberOfDistinctBooks(int[] basket) {
+        Set<Integer> distinctBooks = new HashSet<>();
+        for (int book : basket) {
+            distinctBooks.add(book);
         }
-
-        return (originalPriceOfDiscountableBooks + originalPriceOfNonDiscountableBooks) - discountAmount;
+        return distinctBooks.size();
     }
 
-    private double getPriceSum(Collection<Long> bookIds) {
-
-        return bookRepository.findAllById(bookIds).stream()
-                .mapToDouble(Book::getPrice)
-                .sum();
-    }
-
-    private int getPercentage(Collection<Long> discountableBooks) {
-
-        return switch (discountableBooks.size()) {
-            case 2 -> 5;
-            case 3 -> 10;
-            case 4 -> 20;
-            case 5 -> 25;
-            default -> 0;
-        };
+    private Map<Integer, Integer> getBookCounts(int[] basket) {
+        Map<Integer, Integer> bookCounts = new HashMap<>();
+        for (int book : basket) {
+            bookCounts.put(book, bookCounts.getOrDefault(book, 0) + 1);
+        }
+        return bookCounts;
     }
 }

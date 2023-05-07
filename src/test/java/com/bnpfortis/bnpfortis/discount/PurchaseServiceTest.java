@@ -1,21 +1,14 @@
 package com.bnpfortis.bnpfortis.discount;
 
-import com.bnpfortis.bnpfortis.book.Book;
-import com.bnpfortis.bnpfortis.book.BookRepository;
-import com.bnpfortis.bnpfortis.purchase.exceptions.EmptyBasketException;
 import com.bnpfortis.bnpfortis.purchase.PurchaseService;
-import org.junit.jupiter.api.BeforeEach;
+import com.bnpfortis.bnpfortis.purchase.exceptions.EmptyBasketException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class PurchaseServiceTest {
@@ -23,68 +16,58 @@ class PurchaseServiceTest {
     @Autowired
     private PurchaseService purchaseService;
 
-    @Autowired
-    private BookRepository bookRepository;
-
-    @BeforeEach
-    void setUp() {
-        initDb();
-    }
-
-
     @Test
     @DisplayName("If the basket is empty, throw an exception")
-    void ifNoBooksSelectItShouldThrowAnException() {
+    void testEmptyBasket() {
 
         //Given
-        List<Long> booksIds = List.of();
+        int[] booksIds = {};
 
-        //When
-
-        EmptyBasketException exception = assertThrows(EmptyBasketException.class,
-                () -> purchaseService.calculateDiscount(booksIds));
-
-        //Then
-        assertThat(exception.getMessage()).isEqualTo("The basket should contain books");
-        ;
+        //When //Then
+        assertThatThrownBy(() -> purchaseService.calculatePurchaseDiscount(booksIds))
+                .isInstanceOfAny(EmptyBasketException.class)
+                .hasMessage("The basket is empty");
     }
 
     @Test
     @DisplayName("If You buy only one book. there is no discount")
-    void itShouldCalculateDiscountAndReturn0() {
+    void testBasketWithOnlyOneBook() {
 
         //Given
-        List<Long> booksIds = List.of(1L);
+        int[] booksIds = {1};
 
         //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
-        double result = purchaseService.calculateDiscount(booksIds);
+        //Then
         assertThat(result).isEqualTo(50);
     }
+
     @Test
     @DisplayName("Given only identical books give no discount")
-    void givenOnlyIdenticalBooks() {
+    void testOnlyIdenticalBooks() {
 
         //Given
-        List<Long> booksIds = List.of(1L, 1L);
+        int[] booksIds = {1, 1};
 
         //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
-        double result = purchaseService.calculateDiscount(booksIds);
+        //Then
         assertThat(result).isEqualTo(100);
     }
 
     @Test
     @DisplayName("If You buy two different books from the series, you get a 5% discount on those two books.")
-    void itShouldCalculateDiscountAndReturn5() {
+    void testTwoDifferentBooks() {
 
         //Given
-        List<Long> booksIds = List.of(1L, 2L);
-
+        int[] booksIds = {1, 2};
 
         //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
-        double result = purchaseService.calculateDiscount(booksIds);
+        //Then
         assertThat(result).isEqualTo(95);
     }
 
@@ -93,12 +76,12 @@ class PurchaseServiceTest {
     void itShouldCalculateDiscountAndReturn10() {
 
         //Given
-        List<Long> booksIds = List.of(1L, 2L, 5L);
-
+        int[] booksIds = {1, 2, 5};
 
         //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
-        double result = purchaseService.calculateDiscount(booksIds);
+        //Then
         assertThat(result).isEqualTo(135);
     }
 
@@ -107,11 +90,12 @@ class PurchaseServiceTest {
     void itShouldCalculateDiscountAndReturn20() {
 
         //Given
-        List<Long> booksIds = List.of(1L, 2L, 4L, 5L);
+        int[] booksIds = {1, 2, 4, 5};
 
         //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
-        double result = purchaseService.calculateDiscount(booksIds);
+        //Then
         assertThat(result).isEqualTo(160);
     }
 
@@ -120,11 +104,12 @@ class PurchaseServiceTest {
     void itShouldCalculateDiscountAndReturn25() {
 
         //Given
-        List<Long> booksIds = List.of(1L, 2L, 3L, 4L, 5L);
+        int[] booksIds = {1, 2, 3, 4, 5};
 
         //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
-        double result = purchaseService.calculateDiscount(booksIds);
+        //Then
         assertThat(result).isEqualTo(187.5);
     }
 
@@ -134,52 +119,40 @@ class PurchaseServiceTest {
     void itShouldCalculateDiscountAndReturn10For3AndTheRestOriginalAmount() {
 
         //Given
-        List<Long> booksIds = List.of(1L, 2L, 3L, 3L);
+        int[] booksIds = {1, 2, 3, 3};
 
         //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
-        double result = purchaseService.calculateDiscount(booksIds);
+        //Then
         assertThat(result).isEqualTo(185);
     }
 
+    @Test
+    @DisplayName("Test for the scenario where the buyer has two copies of each book")
+    void testTwoCopiesOfEachBook() {
+
+        //Given
+        int[] booksIds = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
+
+        //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+
+        //Then
+        assertThat(result).isEqualTo(375);
+    }
 
     @Test
     @DisplayName("Final example from the test")
     void finalExample() {
 
         //Given
-        List<Long> booksIds = List.of(1L, 1L, 2L, 2L, 3L, 3L, 4L, 5L);
+        int[] booksIds = {1, 1, 2, 2, 3, 3, 4, 5};
+
         //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
-        double result = purchaseService.calculateDiscount(booksIds);
+        //Then
         assertThat(result).isEqualTo(320);
-    }
-
-    void initDb() {
-
-        List<Book> books = new ArrayList<>();
-
-        double price = 50;
-        Book book1 = new Book(1L, "Clean Code", price,
-                "Robert Martin", 2008);
-        books.add(book1);
-
-        Book book2 = new Book(2L, "The Clean Coder",
-                price, "Robert Martin", 2011);
-        books.add(book2);
-
-        Book book3 = new Book(3L, "Clean Architecture",
-                price, "Robert Martin", 2017);
-        books.add(book3);
-
-        Book book4 = new Book(4L, "Test Driven Development by Example",
-                price, "Kent Beck", 2003);
-        books.add(book4);
-
-        Book book5 = new Book(5L, "Working Effectively With Legacy Code",
-                price, "Michael C. Feathers", 2004);
-        books.add(book5);
-
-        bookRepository.saveAll(books);
     }
 }
