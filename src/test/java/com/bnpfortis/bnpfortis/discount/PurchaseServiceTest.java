@@ -1,8 +1,8 @@
 package com.bnpfortis.bnpfortis.discount;
 
 import com.bnpfortis.bnpfortis.purchase.PurchaseService;
+import com.bnpfortis.bnpfortis.purchase.exceptions.BookNotFoundException;
 import com.bnpfortis.bnpfortis.purchase.exceptions.EmptyBasketException;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,10 @@ class PurchaseServiceTest {
     @Autowired
     private PurchaseService purchaseService;
 
+    /**
+     * My own added corner cases. Meaning these cases were not mentionned in the assignment
+     */
+
     @Test
     @DisplayName("If the basket is empty, throw an exception")
     void testEmptyBasket() {
@@ -28,6 +32,19 @@ class PurchaseServiceTest {
         assertThatThrownBy(() -> purchaseService.calculatePurchaseDiscount(booksIds))
                 .isInstanceOfAny(EmptyBasketException.class)
                 .hasMessage("The basket is empty");
+    }
+
+    @Test
+    @DisplayName("If basket contains an book that is not found then throw an exception")
+    void testBookNotFound() {
+
+        //Given
+        int[] booksIds = {6, 7};
+
+        //When //Then
+        assertThatThrownBy(() -> purchaseService.calculatePurchaseDiscount(booksIds))
+                .isInstanceOfAny(BookNotFoundException.class)
+                .hasMessage("Your basket contain one or more books that are not found");
     }
 
     @Test
@@ -49,6 +66,34 @@ class PurchaseServiceTest {
     void testTwoIdenticalBooks() {
 
         //Given
+        int[] booksIds = {1, 1};
+
+        //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+
+        //Then
+        assertThat(result).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("Test for the scenario where the buyer has two copies of each book")
+    void testTwoCopiesOfEachBook() {
+
+        //Given
+        int[] booksIds = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
+
+        //When
+        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+
+        //Then
+        assertThat(result).isEqualTo(375);
+    }
+
+    @Test
+    @DisplayName("Given two couples ")
+    void testTwoCouples() {
+
+        //Given
         int[] booksIds = {1, 1, 2, 2};
 
         //When
@@ -57,6 +102,10 @@ class PurchaseServiceTest {
         //Then
         assertThat(result).isEqualTo(190);
     }
+
+    /**
+     * Cases that were mentionned in the assignment
+     */
 
     @Test
     @DisplayName("If You buy two different books from the series, you get a 5% discount on those two books.")
@@ -74,7 +123,7 @@ class PurchaseServiceTest {
 
     @Test
     @DisplayName("If you buy 3 different books, you get a 10% discount")
-    void itShouldCalculateDiscountAndReturn10() {
+    void testThreeDifferentBooks() {
 
         //Given
         int[] booksIds = {1, 2, 5};
@@ -88,7 +137,7 @@ class PurchaseServiceTest {
 
     @Test
     @DisplayName("With 4 different books, you get a 20% discount")
-    void itShouldCalculateDiscountAndReturn20() {
+    void testFourDifferentBooks() {
 
         //Given
         int[] booksIds = {1, 2, 4, 5};
@@ -102,7 +151,7 @@ class PurchaseServiceTest {
 
     @Test
     @DisplayName("If you go for the whole hog, and buy all 5, you get a huge 25% discount")
-    void itShouldCalculateDiscountAndReturn25() {
+    void testFiveDifferentBooks() {
 
         //Given
         int[] booksIds = {1, 2, 3, 4, 5};
@@ -117,7 +166,7 @@ class PurchaseServiceTest {
     @Test
     @DisplayName("if you buy, say, 4 books, of which 3 are different titles," +
             " you get a 10% discount on the 3 that form part of a set, but the 4th book still costs 50 EUR")
-    void itShouldCalculateDiscountAndReturn10For3AndTheRestOriginalAmount() {
+    void testFourBooksOfWhich3AreDistinct() {
 
         //Given
         int[] booksIds = {1, 2, 3, 3};
@@ -127,20 +176,6 @@ class PurchaseServiceTest {
 
         //Then
         assertThat(result).isEqualTo(185);
-    }
-
-    @Test
-    @DisplayName("Test for the scenario where the buyer has two copies of each book")
-    void testTwoCopiesOfEachBook() {
-
-        //Given
-        int[] booksIds = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
-
-        //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
-
-        //Then
-        assertThat(result).isEqualTo(375);
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.bnpfortis.bnpfortis.purchase;
 
+import com.bnpfortis.bnpfortis.purchase.exceptions.BookNotFoundException;
 import com.bnpfortis.bnpfortis.purchase.exceptions.EmptyBasketException;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class PurchaseService {
 
     public double calculatePurchaseDiscount(int[] basket) {
 
-        ifBasketIsEmptyThrowAnException(basket);
+        validateBasket(basket);
 
         final double PRICE_PER_BOOK = 50;
         double totalCost = PRICE_PER_BOOK * basket.length;
@@ -28,18 +29,20 @@ public class PurchaseService {
             return totalCost;
         }
         Map<Integer, Integer> bookCountMap = getBookCounts(basket);
-
+        double discountForDistinctBooks = 0;
         while (numberOfDistinctBooks > 1) {
-            int minCount = getMinCount(bookCountMap);
-            double discountPercentage = discountPercentages.getOrDefault(numberOfDistinctBooks, 0.0);
-            double discountAmount = numberOfDistinctBooks * minCount * PRICE_PER_BOOK * discountPercentage;
 
-            totalCost -= discountAmount;
+            int minCountThatQualifiesForADiscount = getMinCountThatQualifiesForADiscount(bookCountMap);
+            double discountPercentage = discountPercentages.getOrDefault(numberOfDistinctBooks, 0.0);
+
+            discountForDistinctBooks = discountForDistinctBooks +
+                    (numberOfDistinctBooks * minCountThatQualifiesForADiscount *
+                            PRICE_PER_BOOK * discountPercentage);
 
             for (Map.Entry<Integer, Integer> entry : bookCountMap.entrySet()) {
                 int count = entry.getValue();
-                if (count >= minCount) {
-                    entry.setValue(count - minCount);
+                if (count >= minCountThatQualifiesForADiscount) {
+                    entry.setValue(count - minCountThatQualifiesForADiscount);
                 }
             }
 
@@ -47,20 +50,24 @@ public class PurchaseService {
             numberOfDistinctBooks = bookCountMap.keySet().size();
         }
 
-        return totalCost;
+        return totalCost - discountForDistinctBooks;
     }
 
-    private void ifBasketIsEmptyThrowAnException(int[] basket) {
+    private void validateBasket(int[] basket) {
         if (basket.length == 0) {
             throw new EmptyBasketException("The basket is empty");
+        }
+        for (int id : basket) {
+            if (!getBooksLocalDB().containsKey(id)) {
+                throw new BookNotFoundException("Your basket contain one or more books that are not found");
+            }
         }
     }
 
     private Map<Integer, Double> getDiscountPercentages() {
 
         Map<Integer, Double> discountPercentagesMap = new HashMap<>();
-        discountPercentagesMap.put(0, 0.0);
-        discountPercentagesMap.put(1, 0.0);
+
         discountPercentagesMap.put(2, 0.05);
         discountPercentagesMap.put(3, 0.1);
         discountPercentagesMap.put(4, 0.2);
@@ -68,10 +75,10 @@ public class PurchaseService {
         return discountPercentagesMap;
     }
 
-    private int getMinCount(Map<Integer, Integer> bookCounts) {
+    private int getMinCountThatQualifiesForADiscount(Map<Integer, Integer> bookCountMap) {
         int minCountThatQualifiesForDiscount = Integer.MAX_VALUE;
 
-        for (int count : bookCounts.values()) {
+        for (int count : bookCountMap.values()) {
             if (count > 0 && count < minCountThatQualifiesForDiscount) {
                 minCountThatQualifiesForDiscount = count;
             }
@@ -94,5 +101,16 @@ public class PurchaseService {
             bookCounts.put(book, bookCounts.getOrDefault(book, 0) + 1);
         }
         return bookCounts;
+    }
+
+    private Map<Integer, String> getBooksLocalDB() {
+
+        Map<Integer, String> books = new HashMap<>();
+        books.put(1, "Clean Code (Robert Martin, 2008)");
+        books.put(2, "The Clean Coder (Robert Martin, 2011)");
+        books.put(3, "Clean Architecture (Robert Martin, 2017)");
+        books.put(4, "Test Driven Development by Example (Kent Beck, 2003)");
+        books.put(5, "Working Effectively With Legacy Code (Michael C. Feathers, 2004)");
+        return books;
     }
 }
