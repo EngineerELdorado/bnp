@@ -1,4 +1,4 @@
-package com.bnpfortis.bnpfortis.book.exceptions;
+package com.bnpfortis.bnpfortis.purchase.exceptions;
 
 public class EmptyBasketException extends RuntimeException {
 
