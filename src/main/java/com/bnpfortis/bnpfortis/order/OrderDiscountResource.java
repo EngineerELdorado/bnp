@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class OrderDiscountResource extends OrderItem {
+public class OrderDiscountResource{
 
     private double originalPrice;
     private double discountPercentage;

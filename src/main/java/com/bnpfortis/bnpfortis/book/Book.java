@@ -1,7 +1,7 @@
 package com.bnpfortis.bnpfortis.book;
 
-import com.bnpfortis.bnpfortis.author.Author;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Book {
 
     @Id
@@ -23,8 +24,7 @@ public class Book {
     @Column(nullable = false)
     private Double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Author author;
+    private String authorName;
 
     @Column(nullable = false)
     private Integer publicationYear;
