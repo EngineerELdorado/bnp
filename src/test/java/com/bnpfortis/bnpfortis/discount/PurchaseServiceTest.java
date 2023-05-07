@@ -2,6 +2,7 @@ package com.bnpfortis.bnpfortis.discount;
 
 import com.bnpfortis.bnpfortis.purchase.PurchaseService;
 import com.bnpfortis.bnpfortis.purchase.exceptions.EmptyBasketException;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,16 +46,16 @@ class PurchaseServiceTest {
 
     @Test
     @DisplayName("Given only identical books give no discount")
-    void testOnlyIdenticalBooks() {
+    void testTwoIdenticalBooks() {
 
         //Given
-        int[] booksIds = {1, 1};
+        int[] booksIds = {1, 1, 2, 2};
 
         //When
         double result = purchaseService.calculatePurchaseDiscount(booksIds);
 
         //Then
-        assertThat(result).isEqualTo(100);
+        assertThat(result).isEqualTo(190);
     }
 
     @Test

@@ -13,11 +13,11 @@ public class PurchaseService {
 
     public double calculatePurchaseDiscount(int[] basket) {
 
+        ifBasketIsEmptyThrowAnException(basket);
+
         final double PRICE_PER_BOOK = 50;
         double totalCost = PRICE_PER_BOOK * basket.length;
-
         Map<Integer, Double> discountPercentages = getDiscountPercentages();
-        ifBasketIsEmptyThrowAnException(basket);
 
         if (basket.length == 1) {
             return totalCost;
