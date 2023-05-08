@@ -12,10 +12,6 @@ public class BasketUtil {
     private BasketUtil() {
     }
 
-    /*
-     * Twe get an array of integer, we put each element in a set. Which eliminates duplicates
-     * Then we return the size of the set (which now has only distinct books)
-     */
     public static int getNumberOfDistinctBooks(int[] basket) {
 
         if (basket == null) {
@@ -28,11 +24,6 @@ public class BasketUtil {
         return distinctBooks.size();
     }
 
-    /*
-     we get an array of books then we create a map. the map should add each book id (as the key)
-     and increment the number of copies it
-     has in the basket (as the value).
-     */
     public static Map<Integer, Integer> getBookCounts(int[] basket) {
 
         if (basket == null) {
@@ -45,10 +36,6 @@ public class BasketUtil {
         return bookCounts;
     }
 
-    /*
-    Getting the min count per book.
-    this min count is what will determine how many times each book qualifies for a discount.
-     */
     public static int getMinCountPerBook(Map<Integer, Integer> bookCountMap) {
 
         if (bookCountMap == null) {

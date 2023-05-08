@@ -22,9 +22,11 @@ public class BasketService {
         if (basket.length == 0) {
             throw new EmptyBasketException("The basket is empty");
         }
+
+        Map<Integer, String> books = bookRepository.getBooks();
+
         for (int id : basket) {
 
-            Map<Integer, String> books = bookRepository.getBooks();
             if (!books.containsKey(id)) {
                 throw new BookNotFoundException("Your basket contain one or more books that are not found");
             }

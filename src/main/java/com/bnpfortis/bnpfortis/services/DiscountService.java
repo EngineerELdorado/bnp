@@ -28,7 +28,6 @@ public class DiscountService {
 
         int numberOfDistinctBooks = BasketUtil.getNumberOfDistinctBooks(basket);
 
-        //if only have similar books then no discount is applied. Return the total cost
         if (numberOfDistinctBooks == 1 && basket.length > 1) {
             return totalCost;
         }
@@ -36,19 +35,19 @@ public class DiscountService {
         Map<Integer, Integer> bookCountMap = BasketUtil.getBookCounts(basket);
         double discountForDistinctBooks = 0;
 
-        //As long as we have more than one distinct book we need to apply discount
+        //As long as we have more than one distinct book we need to apply discount again for them
         while (numberOfDistinctBooks > 1) {
 
             int minCountThatQualifiesForADiscount = BasketUtil.getMinCountPerBook(bookCountMap);
             double discountPercentage = discountPercentages.getOrDefault(numberOfDistinctBooks, 0.0);
 
-            //Processing the discount for each distinct book
             discountForDistinctBooks = discountForDistinctBooks +
-                    (numberOfDistinctBooks * minCountThatQualifiesForADiscount *
-                            PRICE_PER_BOOK * discountPercentage);
+                    (numberOfDistinctBooks * minCountThatQualifiesForADiscount * PRICE_PER_BOOK * discountPercentage);
 
-            /* Check if the book counts still have counts that are greater than the current min count qualify-bale
-            If yes then update the count (because we will process the discount for it too)
+            /*
+            Check if the book counts still have values that are greater than the current min count
+            If yes then reduce the count (because we will process the discount for it too).
+            This allows us to remove distinct books that are already been processed for discount.
              */
             for (Map.Entry<Integer, Integer> entry : bookCountMap.entrySet()) {
                 int count = entry.getValue();
@@ -60,7 +59,6 @@ public class DiscountService {
             bookCountMap.values().removeIf(count -> count == 0);
             numberOfDistinctBooks = bookCountMap.keySet().size();
         }
-
         return totalCost - discountForDistinctBooks;
     }
 }

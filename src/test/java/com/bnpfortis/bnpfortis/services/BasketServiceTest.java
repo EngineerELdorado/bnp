@@ -41,7 +41,7 @@ class BasketServiceTest {
     @DisplayName("Test validation whn basket is null")
     void whenValidatingItShouldThrowAnExceptionIfBasketIsNull() {
 
-        //Given //When //Then
+        //When //Then
         assertThatThrownBy(() -> basketService.validateBasket(null))
                 .isInstanceOf(EmptyBasketException.class)
                 .hasMessage("No basket present");
