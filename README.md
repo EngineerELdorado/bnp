@@ -19,8 +19,9 @@ But I believe those are things we can talk about LIVE if I proceed to the next s
 
 * This is a simple code base. The only thing needed is to have Java installed and maven. (I use java 17 here)
 * in case you don't have maven you can still use the mvn wrapper of the project. eg: ./mvnw clean install
-* To test the solution's implementation(algorithm), use the test class DiscounteServiceTest. 
-It has more than 10 test cases testing all possible scenarios. Even those not mentioned in the assignment
+* To test the solution's end to end implementation(algorithm), use the test class DiscountIntegrationServiceTest. 
+* there are two test classes unit tests  and one integration tests
+There are more than 20 test cases testing all possible scenarios. Even those not mentioned in the assignment
 
 # Problem detected:
 

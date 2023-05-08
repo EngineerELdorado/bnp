@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.Map;
 
+//This class plays the role of the DB Access Object
 @Repository
 public class BookRepository {
 
