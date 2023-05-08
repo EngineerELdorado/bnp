@@ -38,19 +38,6 @@ class BasketServiceTest {
     }
 
     @Test
-    @DisplayName("Test validation whn basket is null")
-    void whenValidatingItShouldThrowAnExceptionIfBasketIsNull() {
-
-        //When //Then
-        assertThatThrownBy(() -> basketService.validateBasket(null))
-                .isInstanceOf(EmptyBasketException.class)
-                .hasMessage("No basket present");
-
-        //Then
-        then(bookRepository).shouldHaveNoInteractions();
-    }
-
-    @Test
     @DisplayName("Test validation whn basket is empty")
     void whenValidatingItShouldThrowAnExceptionIfBasketIsEmpty() {
 
@@ -67,7 +54,7 @@ class BasketServiceTest {
     }
 
     @Test
-    @DisplayName("Test validation whn basket is empty")
+    @DisplayName("Test validation when basket has unknown books")
     void whenValidatingItShouldThrowAnExceptionIfBasketContainsAnUnknownBook() {
 
         //Given
@@ -81,5 +68,18 @@ class BasketServiceTest {
 
         //Then
         then(bookRepository).shouldHaveNoMoreInteractions();
+    }
+
+    @Test
+    @DisplayName("Test validation whn basket is null")
+    void whenValidatingItShouldThrowAnExceptionIfBasketIsNull() {
+
+        //When //Then
+        assertThatThrownBy(() -> basketService.validateBasket(null))
+                .isInstanceOf(EmptyBasketException.class)
+                .hasMessage("No basket present");
+
+        //Then
+        then(bookRepository).shouldHaveNoInteractions();
     }
 }

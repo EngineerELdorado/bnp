@@ -32,9 +32,10 @@ class BasketUtilTest {
 
         //Given
         int[] booksIds = {1, 1, 2, 2, 3, 3};
-        //When
 
+        //When
         int numberOfDistinctBooks = BasketUtil.getNumberOfDistinctBooks(booksIds);
+
         //Then
         assertThat(numberOfDistinctBooks).isEqualTo(3);
     }
