@@ -22,7 +22,7 @@ a lot of times. Otherwise I could finish the assignment in a very short time. or
 * This is a simple code base. The only thing needed is to have Java installed and maven. (I use java 17 here)
 * in case you don't have maven you can still use the mvn wrapper of the project. eg: ./mvnw clean install
 * To test the solution's end to end implementation(algorithm), use the test class DiscountIntegrationServiceTest. 
-* there are two test classes unit tests  and one integration tests
+* there are two test classes for unit tests  and one for integration tests
 There are more than 20 test cases testing all possible scenarios. Even those not mentioned in the assignment
 
 # Problem detected:
