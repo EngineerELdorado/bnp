@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class UtilService {
+public class BasketService {
 
     private final BookRepository bookRepository;
 
@@ -29,20 +29,5 @@ public class UtilService {
                 throw new BookNotFoundException("Your basket contain one or more books that are not found");
             }
         }
-    }
-
-    public int getMinCountPerBook(Map<Integer, Integer> bookCountMap) {
-
-        if (bookCountMap == null) {
-            throw new EmptyBasketException("No data present");
-        }
-        int minCountThatQualifiesForDiscount = Integer.MAX_VALUE;
-
-        for (int count : bookCountMap.values()) {
-            if (count > 0 && count < minCountThatQualifiesForDiscount) {
-                minCountThatQualifiesForDiscount = count;
-            }
-        }
-        return minCountThatQualifiesForDiscount;
     }
 }

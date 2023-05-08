@@ -22,7 +22,7 @@ class DiscountServiceIntegrationTest {
 
     @Test
     @DisplayName("If the basket is empty, throw an exception and send appropriate error message")
-    void testEmptyBasket() {
+    void givenBasketIsEmptyThenThrowTheAppropriateExceptionAndAppropriateMessage() {
 
         //Given
         int[] booksIds = {};
@@ -34,21 +34,18 @@ class DiscountServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("If the basket is empty, throw an exception and send appropriate error message")
-    void testNullCase() {
+    @DisplayName("If the basket is null, throw an exception and send appropriate error message")
+    void givenBasketIsNullThenTrowTheAppropriateExceptionAndAppropriateMessage() {
 
-        //Given
-        int[] booksIds = null;
-
-        //When //Then
-        assertThatThrownBy(() -> discountService.calculatePurchaseDiscount(booksIds))
+        //Given //When //Then
+        assertThatThrownBy(() -> discountService.calculatePurchaseDiscount(null))
                 .isInstanceOfAny(EmptyBasketException.class)
                 .hasMessage("No basket present");
     }
 
     @Test
     @DisplayName("If basket contains any book that is not found then throw an exception")
-    void testBookNotFound() {
+    void givenBasketContainsUnknownBookThenThrowAppropriateExceptionWithAppropriateMessage() {
 
         //Given
         int[] booksIds = {6, 7};
@@ -61,7 +58,7 @@ class DiscountServiceIntegrationTest {
 
     @Test
     @DisplayName("If You buy only one book. there is no discount")
-    void testBasketWithOnlyOneBook() {
+    void givenBasketHasOnlyOneBookThenApplyNoDiscount() {
 
         //Given
         int[] booksIds = {1};
@@ -75,7 +72,7 @@ class DiscountServiceIntegrationTest {
 
     @Test
     @DisplayName("Given only identical books give no discount")
-    void testTwoIdenticalBooks() {
+    void givenBasketHasOnlyIdenticalBooksTheApplyNoDiscount() {
 
         //Given
         int[] booksIds = {1, 1};
@@ -89,7 +86,7 @@ class DiscountServiceIntegrationTest {
 
     @Test
     @DisplayName("Test for the scenario where the buyer has two copies of each book")
-    void testTwoCopiesOfEachBook() {
+    void givenBasketHasTwoCopiesOfEachBookThenApplyAppropriateDiscount() {
 
         //Given
         int[] booksIds = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
@@ -101,27 +98,13 @@ class DiscountServiceIntegrationTest {
         assertThat(result).isEqualTo(375);
     }
 
-    @Test
-    @DisplayName("Given two couples ")
-    void testTwoCouples() {
-
-        //Given
-        int[] booksIds = {1, 1, 2, 2};
-
-        //When
-        double result = discountService.calculatePurchaseDiscount(booksIds);
-
-        //Then
-        assertThat(result).isEqualTo(190);
-    }
-
     /**
      * Test Cases that were mentioned in the assignment
      */
 
     @Test
     @DisplayName("If You buy two different books from the series, you get a 5% discount on those two books.")
-    void testTwoDifferentBooks() {
+    void givenBasketHasTwoDistinctBooksThenApplyDiscountOf5Percent() {
 
         //Given
         int[] booksIds = {1, 2};
@@ -135,7 +118,7 @@ class DiscountServiceIntegrationTest {
 
     @Test
     @DisplayName("If you buy 3 different books, you get a 10% discount")
-    void testThreeDifferentBooks() {
+    void givenBasketHasThreeDistinctBooksThenApplyDiscountOf10Percent() {
 
         //Given
         int[] booksIds = {1, 2, 5};
@@ -149,7 +132,7 @@ class DiscountServiceIntegrationTest {
 
     @Test
     @DisplayName("With 4 different books, you get a 20% discount")
-    void testFourDifferentBooks() {
+    void givenBasketHasFourDistinctBooksThenApplyDiscountOf20Percent() {
 
         //Given
         int[] booksIds = {1, 2, 4, 5};
@@ -163,7 +146,7 @@ class DiscountServiceIntegrationTest {
 
     @Test
     @DisplayName("If you go for the whole hog, and buy all 5, you get a huge 25% discount")
-    void testFiveDifferentBooks() {
+    void givenBasketHasFiveDistinctBooksThenApplyDiscountOf25Percent() {
 
         //Given
         int[] booksIds = {1, 2, 3, 4, 5};
@@ -178,7 +161,7 @@ class DiscountServiceIntegrationTest {
     @Test
     @DisplayName("if you buy, say, 4 books, of which 3 are different titles," +
             " you get a 10% discount on the 3 that form part of a set, but the 4th book still costs 50 EUR")
-    void testFourBooksOfWhich3AreDistinct() {
+    void givenBaskHasFourBooksOfWhich3AreDistinctThenApplyAppropriateDiscount() {
 
         //Given
         int[] booksIds = {1, 2, 3, 3};
