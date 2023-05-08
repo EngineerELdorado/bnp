@@ -15,6 +15,8 @@ So if you don't see any cool or complex tools used here,
 it is just because the simplicity of the assignment didn't require it.
 
 But I believe those are things we can talk about LIVE if I proceed to the next step.
+Also you will see my commits had some intervals of hours. That is because I was very busy and I had to get interrupted
+a lot of times. Otherwise I could finish the assignment in a very short time. or atleast the intervals could be shorter.
 # How to compile and run this code:
 
 * This is a simple code base. The only thing needed is to have Java installed and maven. (I use java 17 here)
