@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-class DiscountServiceTest {
+class DiscountServiceIntegrationTest {
 
     @Autowired
     private DiscountService discountService;
@@ -21,7 +21,7 @@ class DiscountServiceTest {
      */
 
     @Test
-    @DisplayName("If the basket is empty, throw an exception")
+    @DisplayName("If the basket is empty, throw an exception and send appropriate error message")
     void testEmptyBasket() {
 
         //Given
@@ -31,6 +31,19 @@ class DiscountServiceTest {
         assertThatThrownBy(() -> discountService.calculatePurchaseDiscount(booksIds))
                 .isInstanceOfAny(EmptyBasketException.class)
                 .hasMessage("The basket is empty");
+    }
+
+    @Test
+    @DisplayName("If the basket is empty, throw an exception and send appropriate error message")
+    void testNullCase() {
+
+        //Given
+        int[] booksIds = null;
+
+        //When //Then
+        assertThatThrownBy(() -> discountService.calculatePurchaseDiscount(booksIds))
+                .isInstanceOfAny(EmptyBasketException.class)
+                .hasMessage("No basket present");
     }
 
     @Test
@@ -103,7 +116,7 @@ class DiscountServiceTest {
     }
 
     /**
-     * Test Cases that were mentionned in the assignment
+     * Test Cases that were mentioned in the assignment
      */
 
     @Test
