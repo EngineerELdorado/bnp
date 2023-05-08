@@ -1,4 +1,4 @@
-package com.bnpfortis.bnpfortis.purchase.exceptions;
+package com.bnpfortis.bnpfortis.exceptions;
 
 public class BookNotFoundException extends RuntimeException {
 

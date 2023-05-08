@@ -1,8 +1,7 @@
-package com.bnpfortis.bnpfortis.discount;
+package com.bnpfortis.bnpfortis.services;
 
-import com.bnpfortis.bnpfortis.purchase.PurchaseService;
-import com.bnpfortis.bnpfortis.purchase.exceptions.BookNotFoundException;
-import com.bnpfortis.bnpfortis.purchase.exceptions.EmptyBasketException;
+import com.bnpfortis.bnpfortis.exceptions.BookNotFoundException;
+import com.bnpfortis.bnpfortis.exceptions.EmptyBasketException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-class PurchaseServiceTest {
+class DiscountServiceTest {
 
     @Autowired
-    private PurchaseService purchaseService;
+    private DiscountService discountService;
 
     /**
      * My own added test cases. Meaning these cases were not mentionned in the assignment
@@ -29,7 +28,7 @@ class PurchaseServiceTest {
         int[] booksIds = {};
 
         //When //Then
-        assertThatThrownBy(() -> purchaseService.calculatePurchaseDiscount(booksIds))
+        assertThatThrownBy(() -> discountService.calculatePurchaseDiscount(booksIds))
                 .isInstanceOfAny(EmptyBasketException.class)
                 .hasMessage("The basket is empty");
     }
@@ -42,7 +41,7 @@ class PurchaseServiceTest {
         int[] booksIds = {6, 7};
 
         //When //Then
-        assertThatThrownBy(() -> purchaseService.calculatePurchaseDiscount(booksIds))
+        assertThatThrownBy(() -> discountService.calculatePurchaseDiscount(booksIds))
                 .isInstanceOfAny(BookNotFoundException.class)
                 .hasMessage("Your basket contain one or more books that are not found");
     }
@@ -55,7 +54,7 @@ class PurchaseServiceTest {
         int[] booksIds = {1};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(50);
@@ -69,7 +68,7 @@ class PurchaseServiceTest {
         int[] booksIds = {1, 1};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(100);
@@ -83,7 +82,7 @@ class PurchaseServiceTest {
         int[] booksIds = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(375);
@@ -97,7 +96,7 @@ class PurchaseServiceTest {
         int[] booksIds = {1, 1, 2, 2};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(190);
@@ -115,7 +114,7 @@ class PurchaseServiceTest {
         int[] booksIds = {1, 2};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(95);
@@ -129,7 +128,7 @@ class PurchaseServiceTest {
         int[] booksIds = {1, 2, 5};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(135);
@@ -143,7 +142,7 @@ class PurchaseServiceTest {
         int[] booksIds = {1, 2, 4, 5};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(160);
@@ -157,7 +156,7 @@ class PurchaseServiceTest {
         int[] booksIds = {1, 2, 3, 4, 5};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(187.5);
@@ -172,21 +171,21 @@ class PurchaseServiceTest {
         int[] booksIds = {1, 2, 3, 3};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(185);
     }
 
     @Test
-    @DisplayName("Final example from the test")
-    void finalExample() {
+    @DisplayName("Final example from the assignment")
+    void testFinalExample() {
 
         //Given
         int[] booksIds = {1, 1, 2, 2, 3, 3, 4, 5};
 
         //When
-        double result = purchaseService.calculatePurchaseDiscount(booksIds);
+        double result = discountService.calculatePurchaseDiscount(booksIds);
 
         //Then
         assertThat(result).isEqualTo(322.5);

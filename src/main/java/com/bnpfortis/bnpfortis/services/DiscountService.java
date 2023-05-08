@@ -1,7 +1,7 @@
-package com.bnpfortis.bnpfortis.purchase;
+package com.bnpfortis.bnpfortis.services;
 
-import com.bnpfortis.bnpfortis.purchase.exceptions.BookNotFoundException;
-import com.bnpfortis.bnpfortis.purchase.exceptions.EmptyBasketException;
+import com.bnpfortis.bnpfortis.exceptions.BookNotFoundException;
+import com.bnpfortis.bnpfortis.exceptions.EmptyBasketException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Service
-public class PurchaseService {
+public class DiscountService {
 
     public double calculatePurchaseDiscount(int[] basket) {
 

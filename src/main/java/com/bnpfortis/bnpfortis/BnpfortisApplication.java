@@ -9,5 +9,4 @@ public class BnpfortisApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BnpfortisApplication.class, args);
 	}
-
 }
