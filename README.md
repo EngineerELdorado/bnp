@@ -19,11 +19,11 @@ Also you will see my commits had some intervals of hours. That is because I was 
 a lot of times. Otherwise I could finish the assignment in a very short time. or atleast the intervals could be shorter.
 # How to compile and run this code:
 
-* This is a simple code base. The only thing needed is to have Java installed and maven. (I use java 17 here)
-* in case you don't have maven you can still use the mvn wrapper of the project. eg: ./mvnw clean install
+* This is a simple code base. The only thing needed is to have Java installed and maven. (I use java 17 here).
+* in case you don't have maven you can still use the mvn wrapper of the project. eg: ./mvnw clean install.
 * To test the solution's implementation(algorithm) end to end use the test class DiscountServiceIntegrationTest. 
-* there are two test classes for unit tests  and one for integration tests
-There are more than 20 test cases testing all possible scenarios. Even those not mentioned in the assignment
+* there are two test classes for unit tests  and one for integration tests.
+There are more than 20 test cases testing all possible scenarios. Even those not mentioned in the assignment.
 
 # Problem detected:
 
