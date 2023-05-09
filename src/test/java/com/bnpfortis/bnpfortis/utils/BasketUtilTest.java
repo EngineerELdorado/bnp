@@ -24,11 +24,13 @@ class BasketUtilTest {
 
         //When
         int minCountPerBook = BasketUtil.getMinCountPerBook(bookCountMap);
+
         //Then
         assertThat(minCountPerBook).isEqualTo(2);
     }
     @Test
-    void itShouldReturnNumberOfDistinctBooksIfBasketIsNull() {
+    @DisplayName("Should return number of distinct books")
+    void itShouldReturnNumberOfDistinctBooks() {
 
         //Given
         int[] booksIds = {1, 1, 2, 2, 3, 3};
@@ -41,6 +43,7 @@ class BasketUtilTest {
     }
 
     @Test
+    @DisplayName("If basket is null then return 0")
     void itShouldReturnZeroIfBasketIsNull() {
 
         //Given//When
@@ -51,6 +54,7 @@ class BasketUtilTest {
     }
 
     @Test
+    @DisplayName("If basket is empty then return 0")
     void itShouldReturnZeroIfBasketIsEmpty() {
 
         //Given
@@ -64,6 +68,7 @@ class BasketUtilTest {
     }
 
     @Test
+    @DisplayName("If basket not null then return counts of each book")
     void itShouldReturnBookCountsIfBasketIsNotNull() {
 
         //Given
@@ -80,17 +85,19 @@ class BasketUtilTest {
     }
 
     @Test
+    @DisplayName("If basket is empty then return an empty count map")
     void itShouldReturnEmptyMapIfBasketIsNull() {
 
         //Given//When
-        Map<Integer, Integer> bookCounts = BasketUtil.getBookCounts(null);
+        Map<Integer, Integer> bookCountsMap = BasketUtil.getBookCounts(null);
 
         //Then
-        assertThat(bookCounts).isEmpty();
+        assertThat(bookCountsMap).isEmpty();
     }
 
     @Test
-    void whenGettingMinCountThrownExceptionIfDataIsNull() {
+    @DisplayName("If there is no data at all, throw an exception")
+    void whenGettingMinCountItShouldThrownExceptionIfDataIsNull() {
         assertThatThrownBy(() -> BasketUtil.getMinCountPerBook(null))
                 .isInstanceOf(EmptyBasketException.class)
                 .hasMessage("No data present");
