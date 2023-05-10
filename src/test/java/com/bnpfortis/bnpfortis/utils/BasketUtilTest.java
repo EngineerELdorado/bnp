@@ -15,7 +15,6 @@ class BasketUtilTest {
     @Test
     @DisplayName("Happy path test on getting min count per book")
     void itShouldGetMinCountPerBookOnHappyPath() {
-
         //Given
         Map<Integer, Integer> bookCountMap = new HashMap<>();
         bookCountMap.put(1, 3);
@@ -31,7 +30,6 @@ class BasketUtilTest {
     @Test
     @DisplayName("Should return number of distinct books")
     void itShouldReturnNumberOfDistinctBooks() {
-
         //Given
         int[] booksIds = {1, 1, 2, 2, 3, 3};
 
@@ -45,7 +43,6 @@ class BasketUtilTest {
     @Test
     @DisplayName("If basket is null then return 0")
     void itShouldReturnZeroIfBasketIsNull() {
-
         //Given//When
         int numberOfDistinctBooks = BasketUtil.getNumberOfDistinctBooks(null);
 
@@ -56,7 +53,6 @@ class BasketUtilTest {
     @Test
     @DisplayName("If basket is empty then return 0")
     void itShouldReturnZeroIfBasketIsEmpty() {
-
         //Given
         int[] booksIds = {};
 
@@ -70,7 +66,6 @@ class BasketUtilTest {
     @Test
     @DisplayName("If basket not null then return counts of each book")
     void itShouldReturnBookCountsIfBasketIsNotNull() {
-
         //Given
         int[] booksIds = {1, 1, 2, 2, 3, 3};
 
@@ -87,7 +82,6 @@ class BasketUtilTest {
     @Test
     @DisplayName("If basket is empty then return an empty count map")
     void itShouldReturnEmptyMapIfBasketIsNull() {
-
         //Given//When
         Map<Integer, Integer> bookCountsMap = BasketUtil.getBookCounts(null);
 

@@ -13,7 +13,6 @@ public class BasketUtil {
     }
 
     public static int getNumberOfDistinctBooks(int[] basket) {
-
         if (basket == null) {
             return 0;
         }
@@ -25,7 +24,6 @@ public class BasketUtil {
     }
 
     public static Map<Integer, Integer> getBookCounts(int[] basket) {
-
         if (basket == null) {
             return Map.of();
         }

@@ -10,7 +10,6 @@ import java.util.Map;
 public class BookRepository {
 
     public Map<Integer, String> getBooks() {
-
         Map<Integer, String> books = new HashMap<>();
         books.put(1, "Clean Code (Robert Martin, 2008)");
         books.put(2, "The Clean Coder (Robert Martin, 2011)");
@@ -21,7 +20,6 @@ public class BookRepository {
     }
 
     public Map<Integer, Double> getBooksDiscounts() {
-
         Map<Integer, Double> discountPercentagesMap = new HashMap<>();
         discountPercentagesMap.put(2, 0.05);
         discountPercentagesMap.put(3, 0.1);

@@ -28,7 +28,6 @@ class BasketServiceTest {
     @Test
     @DisplayName("Happy path test on validating a basket")
     void whenValidatingReturnSuccessfulIfOnHappyPath() {
-
         //Given
         int[] booksIds = {1, 2, 3, 4};
         given(bookRepository.getBooks()).willReturn(TestData.getBooks());
@@ -40,7 +39,6 @@ class BasketServiceTest {
     @Test
     @DisplayName("Test validation whn basket is empty")
     void whenValidatingItShouldThrowAnExceptionIfBasketIsEmpty() {
-
         //Given
         int[] booksIds = {};
 
@@ -56,7 +54,6 @@ class BasketServiceTest {
     @Test
     @DisplayName("Test validation when basket has unknown books")
     void whenValidatingItShouldThrowAnExceptionIfBasketContainsAnUnknownBook() {
-
         //Given
         int[] booksIds = {1, 0};
 
@@ -73,7 +70,6 @@ class BasketServiceTest {
     @Test
     @DisplayName("Test validation whn basket is null")
     void whenValidatingItShouldThrowAnExceptionIfBasketIsNull() {
-
         //When //Then
         assertThatThrownBy(() -> basketService.validateBasket(null))
                 .isInstanceOf(EmptyBasketException.class)

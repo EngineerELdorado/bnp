@@ -15,7 +15,6 @@ public class DiscountService {
     private final BookRepository bookRepository;
 
     public double calculatePurchaseDiscount(int[] basket) {
-
         basketService.validateBasket(basket);
 
         final double PRICE_PER_BOOK = 50;
@@ -37,7 +36,6 @@ public class DiscountService {
 
         //As long as we have more than one distinct book we need to apply discount again for them
         while (numberOfDistinctBooks > 1) {
-
             int minCountThatQualifiesForADiscount = BasketUtil.getMinCountPerBook(bookCountMap);
             double discountPercentage = discountPercentages.getOrDefault(numberOfDistinctBooks, 0.0);
 

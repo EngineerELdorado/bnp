@@ -15,7 +15,6 @@ public class BasketService {
     private final BookRepository bookRepository;
 
     public void validateBasket(int[] basket) {
-
         if (basket == null) {
             throw new EmptyBasketException("No basket present");
         }
@@ -26,7 +25,6 @@ public class BasketService {
         Map<Integer, String> books = bookRepository.getBooks();
 
         for (int id : basket) {
-
             if (!books.containsKey(id)) {
                 throw new BookNotFoundException("Your basket contain one or more books that are not found");
             }

@@ -6,7 +6,6 @@ import java.util.Map;
 public class TestData {
 
     public static Map<Integer, String> getBooks() {
-
         Map<Integer, String> books = new HashMap<>();
         books.put(1, "Clean Code (Robert Martin, 2008)");
         books.put(2, "The Clean Coder (Robert Martin, 2011)");
